@@ -81,11 +81,12 @@
     (define-values (blurb more?) (above-the-fold body))
     ;; Make the destination HTML pathname
     (define date-struct (date-string->struct/user-error path date-str))
+    (define filename (match (path->string name)
+                        [(pregexp post-file-px (list _ _ s)) s]))
     (define dest-path
       (permalink-path date-struct
-                      (~> title string-downcase slug)
-                      (match (path->string name)
-                        [(pregexp post-file-px (list _ _ s)) s])
+                      filename ; use filename as the destination HTML filename
+                      filename
                       (current-permalink)))
     (post title
           path
